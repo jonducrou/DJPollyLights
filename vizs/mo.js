@@ -26,8 +26,9 @@ var NAME = function (){
 NAME.prototype.getFrame = function(spectrum,volume,bpm,onBeat){
   for (var x = 0; x < 24;++x){ 
     for (var y = 0; y < 6; y++){
+      this.pixels[x][y] = [23,12,5];
       for (var b = 0; b < 3; b++){ 
-        this.pixels[x][y][b] = (this.mask[x][y]*volume/255);
+        this.pixels[x][y][b] += (this.mask[x][y]*volume/255);
       }
     }
   } 
