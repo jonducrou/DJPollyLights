@@ -15,6 +15,8 @@ long energy[SIZE/SLICE];
 int p = 0;
 long t;
 long start;
+long last_beat;
+long beat_length;
 float bpm = 120;
 boolean offBeat = true; 
 boolean sentBeat = false;
@@ -127,16 +129,12 @@ void captureBeat(byte value) {
     sumEnergy*=SLICE;
     sumEnergy/=SIZE;
     energy[(SIZE/SLICE)-1] = newEnergy;
-    // Serial.print(" ");     
-    // Serial.print(newEnergy);     
-    // Serial.print(" ");     
-    // Serial.print(sumEnergy);   
-    //     Serial.println(" ");      
     long diff = millis()-t;
-    if (newEnergy > 1.3 * sumEnergy && diff > 300) {
+    if (newEnergy > 1.3 * sumEnergy && diff > .9*beat_length) {
       if (offBeat) {
         float newBPM = 60000/(float)diff;
         bpm = bpm*.9 + newBPM*.1;
+        beat_length = beat_length*.9 + diff*.1;
         t = millis();  
       }
       offBeat = false;
