@@ -45,7 +45,7 @@ var glasses = function (){
 glasses.prototype.getFrame = function(spectrum,volume,bpm,onBeat){
   this.b++;
   this.flip_count++;
-  if (this.flip_count > 0 && onBeat) {
+  if (this.flip_count > 50 && onBeat) {
     this.flip_count = 0;
     this.flip = !this.flip;
   }
