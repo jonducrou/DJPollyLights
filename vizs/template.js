@@ -13,7 +13,7 @@ var NAME = function (){
 };
 
 // must return a 24x6x3 array of bytes (this.pixels)
-NAME.prototype.getFrame = function(spectrum,volume){
+NAME.prototype.getFrame = function(spectrum,volume,bpm,onBeat){
 
   return this.pixels;
 };
