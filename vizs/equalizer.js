@@ -40,7 +40,7 @@ equalizer.prototype.getFrame = function(spectrum,volume){
 	for (var p = 0; p < 4; p++) {
 	  for (var b = 0; b < 3; b++) {
 	    this.pixels[x+p][5 - y][b] =
-              Math.floor(this.pixels[x+p][5 - y][b] / 2);
+              Math.floor(this.pixels[x+p][5 - y][b] * 7 / 10);
 	  }
 	}
       }
