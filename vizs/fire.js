@@ -1,7 +1,7 @@
 var fire = function (){
   this.counter = 0;
   this.pixels = new Array();
-  this.decay = .5;
+  this.decay = .7;
 
   for (var x = 0; x < 24;++x){ 
     this.pixels[x] = new Array();
