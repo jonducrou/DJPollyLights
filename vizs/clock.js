@@ -37,7 +37,7 @@ clock.prototype.getFrame = function(spectrum,volume){
 
 
   for (var i = 0; i < this.params.length; ++i) {
-    if (spectrum[i]<100) continue;
+    if (spectrum[i]<10) continue;
     var param = this.params[i];
 
     this.ctx.translate(12,3);
