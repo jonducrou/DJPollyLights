@@ -4,7 +4,7 @@ Description=Start DJ Polly's Lightshow
 [Service]
 WorkingDirectory=/home/root/lights
 ExecStart=/home/root/lights/start_lights
-KillMode=process
+KillMode=control-group
 Environment="NODE_PATH=/usr/lib/node_modules"
 
 [Install]
