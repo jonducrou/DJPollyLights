@@ -31,8 +31,8 @@ for (var x = 0; x < 24;++x){
 
 
 var providers = {
-  'rainbow': new r(), 
-//  'text': new t("Dj Polly!"), 
+//  'rainbow': new r(), 
+  'text': new t("GEN MO"), 
 //  'image': new im(), 
 //  'skulls': new skulls(), 
   'fire': new fire(), 
