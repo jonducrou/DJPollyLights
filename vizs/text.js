@@ -80,6 +80,9 @@ text.prototype.g = function(){
 text.prototype.G = function(){
   return [[0,1,1,1,0,0],[1,0,0,0,1,0],[1,0,0,1,1,0],[0,1,0,1,0,0]];
 }
+text.prototype.i = function(){
+  return [[1,0,1,1,1,0]];
+}
 text.prototype.j = function(){
   return [[0,0,0,0,0,1],[1,0,1,1,1,0]];
 }
