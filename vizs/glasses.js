@@ -42,7 +42,7 @@ var glasses = function (){
 };
 
 // must return a 24x6x3 array of bytes (this.pixels)
-glasses.prototype.getFrame = function(spectrum,volume,onBeat){
+glasses.prototype.getFrame = function(spectrum,volume,bpm,onBeat){
   this.b++;
   this.flip_count++;
   if (this.flip_count > 0 && onBeat) {
