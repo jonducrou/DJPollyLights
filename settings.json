@@ -10,7 +10,8 @@
     { "name": "dj-polly" },
     { "name": "surf" },
     { "name": "pulse"},
-    { "name": "starburst"}
+    { "name": "starburst"},
+    { "name": "boost"}
   ],
   "start": "dj-polly"
 }
