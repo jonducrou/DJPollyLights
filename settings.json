@@ -1,0 +1,15 @@
+{
+  "providers": [
+    { "name": "rainbow" },
+    { "name": "text", "args": ["GEN MO"] },
+    { "name": "fire" },
+    { "name": "equalizer" },
+    { "name": "plasma" },
+    { "name": "glasses" },
+    { "name": "hearts" },
+    { "name": "dj-polly" },
+    { "name": "surf" }
+  ],
+  "start": "dj-polly"
+}
+

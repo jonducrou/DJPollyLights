@@ -1,22 +1,11 @@
 var leds = require('./24x6');
 var spectrum = require('./cpp-src/build/Release/spectrum');
-var r = require('./vizs/rainbow.js');
-var t = require('./vizs/text.js');
-var im = require('./vizs/image.js');
-var skulls = require('./vizs/skulls.js');
-var plasma = require('./vizs/plasma2.js');
-var fire = require('./vizs/fire.js');
-var equalizer = require('./vizs/equalizer.js');
-var glasses = require('./vizs/glasses.js');
-var hearts = require('./vizs/hearts.js');
-var clock = require('./vizs/clock.js');
-var dj_polly = require('./vizs/dj-polly.js');
-var surf = require('./vizs/surf.js');
-var mo = require('./vizs/mo.js');
-var mario = require('./vizs/mario.js');
+var settings = require('./settings.json');
 var FRAME_RATE = 50;
 var c = 0;
-var now_playing = [['dj_polly',255]];
+
+var providers = {};
+var now_playing = [[settings["start"],255]];
 
 var pixels = new Array();
 for (var x = 0; x < 24;++x){
@@ -30,22 +19,12 @@ for (var x = 0; x < 24;++x){
 }
 
 
-var providers = {
-//  'rainbow': new r(), 
-  'text': new t("GEN MO"), 
-//  'image': new im(), 
-//  'skulls': new skulls(), 
-  'fire': new fire(), 
-  'equalizer': new equalizer(),
-  'plasma': new plasma(),
-  'glasses': new glasses(),
-  'hearts': new hearts(),
-//  'clock': new clock(),
-  'dj_polly': new dj_polly(),
-  'surf': new surf(),
-  'mo': new mo(),
-  'mario': new mario()
-};
+
+for (var i = 0; i < settings['providers'].length; ++i) {
+  var p = settings['providers'][i];
+  var r = require('./vizs/' + p.name + '.js');
+  providers[p.name] = new r(p.args);
+}
 
 var next_frame = (new Date).getTime();
 var miss_c = 0;
@@ -93,13 +72,6 @@ function go() {
   }
   var volume = (s[0]+s[1]+s[2]+s[3]+s[4]+s[5]+s[6])/7;
 
-//  var v = providers['rainbow'].getFrame(s,volume);
-//  var v = providers['text'].getFrame(s,volume);
-//  var v = providers['image'].getFrame(s,volume);
-//  var v = providers['skulls'].getFrame(s,volume);
-//  var v = providers['plasma'].getFrame(s,volume);
-
-
   for (var x = 0; x < 24;++x){
     for (var y = 0; y < 6; y++){
       for (var b = 0; b < 3; b++){
@@ -144,7 +116,7 @@ function test_pattern(i,x,y){
         i++;
       }
     }
-    setTimeout(function(){test_pattern(i,x%24,y%6)},1);
+    setTimeout(function(){test_pattern(i,x%24,y%6)},0);
   }
 }
 

@@ -1,5 +1,5 @@
-var text = function (str){
-  this.str = str;
+var text = function (args){
+  this.str = args[0];
   this.offset = 0;
   this.length = 0;
   this.skip = 0;
@@ -9,8 +9,8 @@ var text = function (str){
   for (var c = 0; c < 24;++c) {
     this.mask[this.length++] = [0,0,0,0,0,0];    
   }
-  for (var c =0; c < str.length;++c) {
-    var t = this[str.charAt(c)]();
+  for (var c =0; c < this.str.length;++c) {
+    var t = this[this.str.charAt(c)]();
     for (var i = 0; i < t.length;++i) {
       this.mask[this.length++] = t[i];
     }
