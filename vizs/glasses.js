@@ -42,10 +42,10 @@ var glasses = function (){
 };
 
 // must return a 24x6x3 array of bytes (this.pixels)
-glasses.prototype.getFrame = function(spectrum,volume){
+glasses.prototype.getFrame = function(spectrum,volume,onBeat){
   this.b++;
   this.flip_count++;
-  if (this.flip_count == 120) {
+  if (this.flip_count > 0 && onBeat) {
     this.flip_count = 0;
     this.flip = !this.flip;
   }
@@ -53,7 +53,7 @@ glasses.prototype.getFrame = function(spectrum,volume){
     for (var y = 0; y < 6; y++){
       switch (this.glasses_mask[this.flip?x:23-x][y]) {
         case 0:
-          this.pixels[x][y] = [200,200,100];
+          this.pixels[x][y] = onBeat ? [100,100,100] : [80,80,80];
           break;
         case 1:
           this.pixels[x][y] = [0,0,0];
