@@ -32,15 +32,15 @@ for (var x = 0; x < 24;++x){
 
 var providers = {
   'rainbow': new r(), 
-  'text': new t("Dj Polly!"), 
+//  'text': new t("Dj Polly!"), 
 //  'image': new im(), 
-  'skulls': new skulls(), 
+//  'skulls': new skulls(), 
   'fire': new fire(), 
   'equalizer': new equalizer(),
   'plasma': new plasma(),
   'glasses': new glasses(),
   'hearts': new hearts(),
-  'clock': new clock(),
+//  'clock': new clock(),
   'dj_polly': new dj_polly(),
   'surf': new surf(),
   'mo': new mo(),
@@ -59,19 +59,20 @@ function go() {
   if (now_playing[0][1] <= 0) {
     now_playing.splice(0,1);
   }
-  if (c > 500) {
-    console.log("avg " + miss_c/c + "ms per frame (" + now_playing + ")");
+  if (c > 750) {
+    console.log("avg " + Math.round(miss_c/c) + "ms per frame, frame rate needs " + (1000/FRAME_RATE));
     if (now_playing.length == 1) {
       var keys = Object.keys(providers);
       for (var p=0;p<now_playing.length;++p){
         for (var k=0;k<keys.length;++k){
-          if (p[0] == keys[k]) {
+          if (now_playing[p][0] === keys[k]) {
             keys.splice(k,1);
           }
         }
       }
       now_playing.push([keys[ keys.length * Math.random() << 0], 0]);
     }
+    console.log("Now playing:" + now_playing);
     c=0;
     miss_c=0;
   }
@@ -123,13 +124,29 @@ function go() {
   for (var x = 0; x < 24;++x){ 
     for (var y = 0; y < 6;++y){ 
       leds.setLed(x,y,pixels[x][y][0],pixels[x][y][1],pixels[x][y][2]); 
-//      leds.setLed(x,y,v[x][y][0],v[x][y][1],v[x][y][2]); 
     }
   }
   leds.draw();
   d = (new Date).getTime() - d;
   setTimeout(go,(1000/FRAME_RATE)-d);
-  global.gc();
 }
 
-go();
+function test_pattern(i,x,y){
+  leds.setLed(x,y,i==0?255:0,i==1?255:0,i==2?255:0); 
+  leds.draw();
+  if (i > 2){
+    go(); 
+  } else {
+    x+=1;
+    if (x==24) {
+      y++;
+      if (y==6) {
+        i++;
+      }
+    }
+    setTimeout(function(){test_pattern(i,x%24,y%6)},1);
+  }
+}
+
+require('./clear.js');
+test_pattern(0,0,0);
