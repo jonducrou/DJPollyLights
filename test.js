@@ -5,7 +5,7 @@ var c = 0;
 console.log(process.argv);
 
 var now_playing = require("./vizs/" + process.argv[2] + ".js");
-now_playing = new now_playing();
+now_playing = new now_playing(process.argv[3], process.argv[4]);
 
 var pixels = new Array();
 for (var x = 0; x < 24;++x){
