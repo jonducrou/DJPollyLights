@@ -43,9 +43,13 @@ text.prototype.getFrame = function(spectrum,volume){
     for (var y = 0; y < 6; ++y) {
       var v =0;
       if (x+this.offset<this.length) {
-        v = this.mask[(x+this.offset)][y] * spectrum[6];
+        v = this.mask[(x+this.offset)][y] * volume;
       }
-      this.pixels[x][y] = [v,v,v]; 
+      if (v==0){
+        this.pixels[x][y] = [0,0,0];
+      } else {
+        this.pixels[x][y] = [v*58/255,v*81/255,v*54/255]; 
+      }
     }
   }
   this.skip++;
@@ -67,14 +71,32 @@ text.prototype.d = function(){
 text.prototype.D = function(){
   return [[1,1,1,1,1,0],[1,0,0,0,1,0],[0,1,1,1,0,0]];
 }
+text.prototype.E = function(){
+  return [[1,1,1,1,1,0],[1,0,1,0,1,0],[1,0,0,0,1,0]];
+}
+text.prototype.g = function(){
+  return [[0,0,1,1,0,0],[0,0,1,1,0,1],[0,0,1,1,1,0]];
+}
+text.prototype.G = function(){
+  return [[0,1,1,1,0,0],[1,0,0,0,1,0],[1,0,0,1,1,0],[0,1,0,1,0,0]];
+}
 text.prototype.j = function(){
-  return [[0,0,0,0,0,1],[1,0,1,1,1,1]];
+  return [[0,0,0,0,0,1],[1,0,1,1,1,0]];
 }
 text.prototype.l = function(){
   return [[1,1,1,1,1,0]];
 }
+text.prototype.M = function(){
+  return [[1,1,1,1,1,0],[0,1,0,0,0,0],[0,0,1,0,0,0],[0,1,0,0,0,0],[1,1,1,1,1,0]];
+}
+text.prototype.N = function(){
+  return [[1,1,1,1,1,0],[0,1,1,0,0,0],[0,0,1,1,0,0],[1,1,1,1,1,0]];
+}
 text.prototype.o = function(){
   return [[0,0,0,1,0,0],[0,0,1,0,1,0],[0,0,0,1,0,0]];
+}
+text.prototype.O = function(){
+  return [[0,1,1,1,0,0],[1,0,0,0,1,0],[1,0,0,0,1,0],[0,1,1,1,0,0]];
 }
 text.prototype.P = function(){
   return [[1,1,1,1,1,0],[1,0,1,0,0,0],[0,1,0,0,0,0]];
@@ -87,6 +109,18 @@ text.prototype[" "] = function(){
 }
 text.prototype["!"] = function(){
   return [[1,1,1,0,1,0]];
+}
+text.prototype["0"] = function(){
+  return [[0,1,1,1,1,0],[1,0,0,0,1,0],[0,1,1,1,0,0]];
+}
+text.prototype["1"] = function(){
+  return [[0,1,0,0,1,0],[1,1,1,1,1,0],[0,0,0,0,1,0]];
+}
+text.prototype["2"] = function(){
+  return [[0,1,0,0,1,0],[1,0,0,1,1,0],[0,1,1,0,1,0]];
+}
+text.prototype["3"] = function(){
+  return [[1,0,1,0,1,0],[1,0,1,0,1,0],[0,1,1,1,0,0]];
 }
 
 
