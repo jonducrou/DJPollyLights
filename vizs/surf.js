@@ -45,7 +45,8 @@ NAME.prototype.getFrame = function(spectrum,volume,bpm,onBeat){
 
   for (var s = 6; s >= 0; --s){
     var llp = this.last_pos[s];
-    var pos = 6-Math.floor(spectrum[s]*6/255);
+    var pos = 6-Math.floor(spectrum[s]*8/255);//intentionally bias louder!
+    pos = pos<0?0:pos;
     if (pos > this.last_last_pos[s] && this.last_pos[s] === this.last_last_pos[s])
       this.last_pos[s]++;
     else if (pos < this.last_last_pos[s] && this.last_pos[s] === this.last_last_pos[s])
