@@ -23,12 +23,12 @@ plasma.prototype.getFrame = function(spectrum,volume,bpm,onBeat){
       r = Math.floor((Math.cos((x+this.n)/4)*128)+(Math.cos((this.n+y)/4)*128));
       g = Math.floor((Math.cos((x+this.n)/4)*128)+(Math.cos((this.m+y)/4)*128));
       b = Math.floor((Math.sin((x-this.m)/4)*128)+(Math.sin((this.m+y)/4)*128));
-   //   this.pixels[xx][yy] = [r*spectrum[1]/255,g*spectrum[2]/255,b*spectrum[3]/255];
-      this.pixels[xx][yy] = [r,g,b];
+      this.pixels[xx][yy] = [0+r*spectrum[1]/155,0+g*spectrum[2]/155,0+b*spectrum[3]/155];
+   //   this.pixels[xx][yy] = [r,g,b];
     }
   }
-  this.m-=bpm/60;
-  this.n++;
+  this.m-=bpm/130;
+  this.n+=.1;
   return this.pixels;
 };
 
