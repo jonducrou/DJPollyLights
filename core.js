@@ -8,7 +8,13 @@ var plasma = require('./vizs/plasma.js');
 var fire = require('./vizs/fire.js');
 var equalizer = require('./vizs/equalizer.js');
 var glasses = require('./vizs/glasses.js');
-var FRAME_RATE = 30;
+var hearts = require('./vizs/hearts.js');
+var clock = require('./vizs/clock.js');
+var dj_polly = require('./vizs/dj-polly.js');
+var surf = require('./vizs/surf.js');
+var FRAME_RATE = 50;
+var c = 0;
+var now_playing = ['dj_polly'];
 
 var pixels = new Array();
 for (var x = 0; x < 24;++x){
@@ -25,16 +31,39 @@ for (var x = 0; x < 24;++x){
 var providers = {
   'rainbow': new r(), 
   'text': new t("Dj Polly!"), 
-  'image': new im(), 
+//  'image': new im(), 
   'skulls': new skulls(), 
   'fire': new fire(), 
   'equalizer': new equalizer(),
   'plasma': new plasma(),
-  'glasses': new glasses()
+  'glasses': new glasses(),
+  'hearts': new hearts(),
+  'clock': new clock(),
+  'dj_polly': new dj_polly(),
+  'surf': new surf()
 };
+
+var next_frame = (new Date).getTime();
+var miss_c = 0;
 
 function go() {
   var d = (new Date).getTime();
+  miss_c+=d-next_frame;
+  next_frame = d+1000/FRAME_RATE;
+  
+  c++;
+  if (c > 250) {
+    console.log("avg " + miss_c/c + "ms late " + now_playing);
+    if (now_playing.length > 2 || (now_playing.length == 2 && Math.random() > .5)) {
+      now_playing.splice(Math.floor(Math.random() * now_playing.length), 1);
+    } else {
+      var keys = Object.keys(providers);
+      now_playing.push(keys[ keys.length * Math.random() << 0]);
+    }
+    c=0;
+    miss_c=0;
+  }
+  
   var s;
   try {
     s = spectrum.getSpectrum();
@@ -62,9 +91,8 @@ function go() {
     }
   }
 //  var things = ['skulls','plasma','text','rainbow'];
-  var things = 
-['equalizer','glasses'];//'fire','text','rainbow','plasma'];
-  
+  var things = ['surf'];//'dj_polly','fire'];//'equalizer','glasses'];//'fire','text','rainbow','plasma'];
+  things = now_playing;
   
   for (var i = 0; i < things.length; ++i){
     var v = providers[things[i]].getFrame(s,volume,s[8] > 0);
