@@ -1,0 +1,11 @@
+[Unit]
+Description=Start DJ Polly's Lightshow
+
+[Service]
+WorkingDirectory=/home/root/lights
+ExecStart=/usr/bin/node --expose-gc core.js
+KillMode=process
+Environment="NODE_PATH=/usr/lib/node_modules"
+
+[Install]
+WantedBy=multi-user.target
