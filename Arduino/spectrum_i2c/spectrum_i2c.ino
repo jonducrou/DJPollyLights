@@ -43,7 +43,7 @@ void readSpectrum()
     //Read twice and take the average by dividing by 2
     int value = (analogRead(spectrumAnalog) + analogRead(spectrumAnalog) ) >>1; 
     //there is noise on the line - this just smooths the noise by flooring low signal strength to zero
-    value -= 50;
+    value -= 80;
     if (value < 0)
       value=0;
     //value is 10 bit, we need 8 bit, so divide by 4
