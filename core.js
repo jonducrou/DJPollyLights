@@ -1,11 +1,11 @@
 var leds = require('./24x6');
 var spectrum = require('./cpp-src/build/Release/spectrum');
-var r = require('./rainbow.js');
-var t = require('./text.js');
-var im = require('./image.js');
-var skulls = require('./skulls.js');
-var plasma = require('./plasma.js');
-var fire = require('./fire.js');
+var r = require('./vizs/rainbow.js');
+var t = require('./vizs/text.js');
+var im = require('./vizs/image.js');
+var skulls = require('./vizs/skulls.js');
+var plasma = require('./vizs/plasma.js');
+var fire = require('./vizs/fire.js');
 var FRAME_RATE = 30;
 
 var pixels = new Array();
