@@ -30,7 +30,7 @@ void setup() {
 //just loop and read - need to add normalization
 void loop() {
   readSpectrum();
-  delay(10);
+  delay(1);
 }
 
 // Read 7 band equalizer.
@@ -48,7 +48,7 @@ void readSpectrum()
       value=0;
     //value is 10 bit, we need 8 bit, so divide by 4
     value >>= 2;
-    spectrum[i] = value;
+    spectrum[i] = (byte)((float)spectrum[i] * 0.7 + (float)value * 0.3);
     //request the next value
     digitalWrite(spectrumStrobe,HIGH);
     digitalWrite(spectrumStrobe,LOW);     
