@@ -24,13 +24,20 @@ var eqmap = [
 // must return a 24x6x3 array of bytes (this.pixels)
 equalizer.prototype.getFrame = function(spectrum,volume){
 
-  for (var x = 0; x< 24; x++) {
+  for (var x = 0; x < 24; x += 4) {
+    var i = x / 4;
+    var v = Math.floor(spectrum[i] * ( 6 / 256 ));
     for (var y = 0; y < 6; y++) {
-      var v = Math.floor(spectrum[0] * ( 6 / 256 ));
       if (v >= y) {
-	this.pixels[x][y] = [0, 0, 0];
+	// Each bar is 4 pixels wide
+	for (var p = 0; p < 4; p++) {
+	  this.pixels[x+p][y] = [0, 0, 0];
+	}
       } else {
-	this.pixels[x][y] = eqmap[y];
+	// Each bar is 4 pixels wide
+	for (var p = 0; p < 4; p++) {
+	  this.pixels[x+p][y] = eqmap[y];
+	}
       }
     }
   }
