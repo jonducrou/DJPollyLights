@@ -31,12 +31,17 @@ equalizer.prototype.getFrame = function(spectrum,volume){
       if (v > y) {
 	// Each bar is 4 pixels wide
 	for (var p = 0; p < 4; p++) {
-	  this.pixels[x+p][5 - y] = eqmap[5 - y];
+	  for (var b = 0; b < 3; b++) {
+	    this.pixels[x+p][5 - y][b] = eqmap[5 - y][b];
+	  }
 	}
       } else {
 	// Each bar is 4 pixels wide
 	for (var p = 0; p < 4; p++) {
-	  this.pixels[x+p][5 - y] = [0, 0, 0];
+	  for (var b = 0; b < 3; b++) {
+	    this.pixels[x+p][5 - y][b] =
+              Math.floor(this.pixels[x+p][5 - y][b] / 2);
+	  }
 	}
       }
     }
