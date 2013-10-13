@@ -14,8 +14,8 @@ var equalizer = function (){
 
 var eqmap = [
   [ 255,   0, 0 ],
+  [ 255, 127, 0 ],
   [ 255, 255, 0 ],
-  [   0, 255, 0 ],
   [   0, 255, 0 ],
   [   0, 255, 0 ],
   [   0, 255, 0 ],
@@ -27,8 +27,8 @@ equalizer.prototype.getFrame = function(spectrum,volume){
   for (var x = 0; x < 24; x += 4) {
     var i = x / 4;
     var v = Math.floor(spectrum[i] * ( 6 / 256 ));
-    for (var y = 0; y < 6; y++) {
-      if (v >= y) {
+    for (var y = 5; y >= 0; y--) {
+      if (v > y) {
 	// Each bar is 4 pixels wide
 	for (var p = 0; p < 4; p++) {
 	  this.pixels[x+p][y] = [0, 0, 0];
