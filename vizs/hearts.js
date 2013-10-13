@@ -20,8 +20,8 @@ var skull = function (){
 skull.prototype.getFrame = function(spectrum,volume){
   //this.c++;
 
-  var bass = (spectrum[0]+spectum[1])/(2*256);
-  for (var x = 0; x < 24;++x){ 
+  var bass = (spectrum[0]+spectrum[1])/(2*256);
+  for (var x = 0; x < 5;++x){ 
     for (var y = 0; y < 6; y++){
       if (this.dark_red[x][y]) {
         this.pixels[x][y] = [100*bass,0,0];
