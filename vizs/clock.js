@@ -11,7 +11,8 @@ var clock = function (){
                  {'speed':0.11,'colour':'rgba(  0,128,128,.25)'},
                  {'speed':0.13,'colour':'rgba(128,  0,128,.25)'},
                  {'speed':0.17,'colour':'rgba(128,128,  0,.25)'},
-                 {'speed':0.19,'colour':'rgba(128,  0,  0,.25)'}];
+                 {'speed':0.19,'colour':'rgba(128,  0,  0,.25)'},
+                 {'speed':0.23,'colour':'rgba(128,  128,  128,.25)'}];
 
   this.pixels = new Array();
 
@@ -36,12 +37,13 @@ clock.prototype.getFrame = function(spectrum,volume){
 
 
   for (var i = 0; i < this.params.length; ++i) {
-    var param = params[i];
+    if (spectrum[i]<100) continue;
+    var param = this.params[i];
 
     this.ctx.translate(12,3);
-    this.ctx.rotate(params.speed*this.c);
+    this.ctx.rotate(param.speed*this.c);
 
-    this.ctx.strokeStyle = params.colour;
+    this.ctx.strokeStyle = param.colour;
     this.ctx.beginPath();
     this.ctx.lineTo(0, 0);
     this.ctx.lineTo(24, 0);
