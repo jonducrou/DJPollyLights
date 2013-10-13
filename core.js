@@ -6,6 +6,7 @@ var im = require('./vizs/image.js');
 var skulls = require('./vizs/skulls.js');
 var plasma = require('./vizs/plasma.js');
 var fire = require('./vizs/fire.js');
+var equalizer = require('./vizs/equalizer.js');
 var FRAME_RATE = 30;
 
 var pixels = new Array();
@@ -26,6 +27,7 @@ var providers = {
   'image': new im(), 
   'skulls': new skulls(), 
   'fire': new fire(), 
+  'equalizer': new equalizer(),
   'plasma': new plasma()
 };
 
@@ -58,7 +60,7 @@ function go() {
     }
   }
 //  var things = ['skulls','plasma','text','rainbow'];
-  var things = ['fire'];//'text','rainbow','plasma'];
+  var things = ['equalizer'];//'fire','text','rainbow','plasma'];
   
   
   for (var i = 0; i < things.length; ++i){
