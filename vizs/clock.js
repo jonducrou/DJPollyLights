@@ -1,14 +1,20 @@
 var Canvas = require('canvas');
 
-var skulls = function (){
+var clock = function (){
   this.canvas = new Canvas(24,6);
   this.ctx = this.canvas.getContext('2d');
-  this.text = "Hello Seattle! Put your hands up?";
   this.text_width = this.ctx.measureText(this.text).width;
-  this.scroll=-25;
 
   this.c = 0.0;
+  this.params = [{'speed':0.05,'colour':'rgba(  0,128,  0,.25)'},
+                 {'speed':0.07,'colour':'rgba(  0,  0,128,.25)'},
+                 {'speed':0.11,'colour':'rgba(  0,128,128,.25)'},
+                 {'speed':0.13,'colour':'rgba(128,  0,128,.25)'},
+                 {'speed':0.17,'colour':'rgba(128,128,  0,.25)'},
+                 {'speed':0.19,'colour':'rgba(128,  0,  0,.25)'}];
+
   this.pixels = new Array();
+
 
   for (var x = 0; x < 24;++x){ 
     this.pixels[x] = new Array();
@@ -22,57 +28,28 @@ var skulls = function (){
 };
 
 // must return a 24x6x3 array of bytes (this.pixels)
-skulls.prototype.getFrame = function(spectrum,volume){
+clock.prototype.getFrame = function(spectrum,volume){
   this.c++;
 
   this.ctx.fillStyle = 'rgba(0,0,0,255)';
   this.ctx.fillRect(0,0,24,6);
-  this.ctx.fillStyle = 'rgba(0,150,00,255)';
-  this.ctx.font = '6px';
-//  this.ctx.translate(12-this.scroll,3);
-//  this.ctx.rotate(0.1);
-//  this.ctx.fillText(this.text, 12, 4);
-//  this.ctx.rotate(-.1);
-//  this.ctx.translate(this.scroll-12,-3);
 
-  this.scroll = this.scroll>this.text_width?-25:this.scroll+1;
 
-  this.ctx.translate(12,3);
-  this.ctx.rotate(.1*this.c);
+  for (var i = 0; i < this.params.length; ++i) {
+    var param = params[i];
 
-  this.ctx.strokeStyle = 'rgba(0,128,0,.5)';
-  this.ctx.beginPath();
-  this.ctx.lineTo(0, 0);
-  this.ctx.lineTo(24, 0);
-  this.ctx.stroke();
+    this.ctx.translate(12,3);
+    this.ctx.rotate(params.speed*this.c);
 
-  this.ctx.rotate(-.1*this.c);
-  this.ctx.translate(-12,-3);
+    this.ctx.strokeStyle = params.colour;
+    this.ctx.beginPath();
+    this.ctx.lineTo(0, 0);
+    this.ctx.lineTo(24, 0);
+    this.ctx.stroke();
 
-  this.ctx.translate(12,3);
-  this.ctx.rotate(.2*this.c);
-
-  this.ctx.strokeStyle = 'rgba(0,0,128,.5)';
-  this.ctx.beginPath();
-  this.ctx.lineTo(0, 0);
-  this.ctx.lineTo(24, 0);
-  this.ctx.stroke();
-
-  this.ctx.rotate(-.2*this.c);
-  this.ctx.translate(-12,-3);
-
-  this.ctx.translate(12,3);
-  this.ctx.rotate(.3*this.c);
-
-  this.ctx.strokeStyle = 'rgba(128,0,0,.5)';
-  this.ctx.beginPath();
-  this.ctx.lineTo(0, 0);
-  this.ctx.lineTo(24, 0);
-  this.ctx.stroke();
-
-  this.ctx.rotate(-.3*this.c);
-  this.ctx.translate(-12,-3);
-
+    this.ctx.rotate(-param.speed*this.c);
+    this.ctx.translate(-12,-3);
+  }
 
   for (var x = 0; x < 24;++x){ 
     for (var y = 0; y < 6; y++){
@@ -88,4 +65,4 @@ skulls.prototype.getFrame = function(spectrum,volume){
 
 
 
-module.exports = skulls;
+module.exports = clock;
