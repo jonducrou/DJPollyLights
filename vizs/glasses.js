@@ -17,10 +17,10 @@ var glasses = function (){
     [1,2,2,2,2,1],
     [1,2,2,2,2,1],
     [1,2,2,2,2,1],
-    [1,2,2,1,1,0]
+    [1,2,2,1,1,0],
     [0,1,1,0,0,0],
     [0,1,1,0,0,0],
-    [1,2,2,1,1,0]
+    [1,2,2,1,1,0],
     [1,2,2,2,2,1],
     [1,2,2,2,2,1],
     [1,2,2,2,2,1],
@@ -34,16 +34,24 @@ var glasses = function (){
     [0,1,0,0,0,0],
     [0,1,0,0,0,0],
     [0,1,0,0,0,0],
-    [0,0,1,0,0,0],
+    [0,0,1,0,0,0]
   ];
+  this.b = 0;
+  this.flip = false;
+  this.flip_count = 0;
 };
 
 // must return a 24x6x3 array of bytes (this.pixels)
 glasses.prototype.getFrame = function(spectrum,volume){
-
+  this.b++;
+  this.flip_count++;
+  if (this.flip_count == 120) {
+    this.flip_count = 0;
+    this.flip = !this.flip;
+  }
   for (var x = 0; x < 24;++x){ 
     for (var y = 0; y < 6; y++){
-      switch (this.glasses_mask) {
+      switch (this.glasses_mask[this.flip?x:23-x][y]) {
         case 0:
           this.pixels[x][y] = [200,200,100];
           break;
@@ -51,8 +59,27 @@ glasses.prototype.getFrame = function(spectrum,volume){
           this.pixels[x][y] = [0,0,0];
           break;
         case 2:
-          this.pixels[x][y] = [0,0,250];
-          break;
+          switch ((this.b+y)%6) {
+            case 0:
+              this.pixels[x][y] = [0,0,spectrum[(this.b+x)%7]];
+              break;
+            case 1:
+              this.pixels[x][y] = [0,spectrum[(this.b+x)%7],spectrum[(this.b+x)%7]];
+              break;
+            case 2:
+              this.pixels[x][y] = [0,spectrum[(this.b+x)%7],0];
+              break;
+            case 3:
+              this.pixels[x][y] = [spectrum[(this.b+x)%7],spectrum[(this.b+x)%7],0];
+              break;
+            case 4:
+              this.pixels[x][y] = [spectrum[(this.b+x)%7],0,0];
+              break;
+            case 5:
+              this.pixels[x][y] = [spectrum[(this.b+x)%7],0,spectrum[(this.b+x)%7]];
+              break;
+          }
+        break;
       }
     }
   }
