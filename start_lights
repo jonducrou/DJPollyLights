@@ -1,0 +1,8 @@
+#!/bin/sh
+
+# ensure that spi cape is enabled
+echo BB-SPI1-01 > /sys/devices/bone_capemgr.*/slots
+
+# start the show
+
+node --expose-gc /home/root/lights/core.js
