@@ -6,6 +6,7 @@
 #include "include/ws2801-driver.h"
 #define BUILDING_NODE_EXTENSION
 #include <node.h>
+#include <cmath> 
 
 using namespace v8;
 
@@ -22,9 +23,11 @@ Handle<Value> setLed(const Arguments& args) {
     ThrowException(Exception::TypeError(String::New("Wrong arguments")));
     return scope.Close(Undefined());
   }
-
-  ws2801.SetLed(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue(), 
-args[3]->NumberValue());
+  // I found that these leds dont have a linear illumination. this tries to compensate.
+  double r = pow(args[1]->NumberValue(),1.5f)/24;
+  double g = pow(args[2]->NumberValue(),1.5f)/24;
+  double b = pow(args[3]->NumberValue(),1.5f)/24;
+  ws2801.SetLed(args[0]->NumberValue(),r,g,b);
 
   return scope.Close(Undefined());
 }
@@ -34,40 +37,6 @@ Handle<Value> draw(const Arguments& args){
   ws2801.Draw();
   return scope.Close(Undefined());
 }
-
-int main(int argc, char ** argv)
-{
-     const int fps = 1;
-     int i;
-     int count = 0;
-//     try
-     {
-          printf("debug: ws2801 object ready\n");
-    
-          while (1)
-          {
-               ws2801.ClearBuffer();
-               for(int i = 0; i < 16; i++)
-               {
-                    ws2801.SetLed(i, i==count?255:0,(i+16==count)?255:0,(i+32==count)?255:0);
-//ws2801.SetLed(i, i==count?255:0, i==(count+1)?255:0, i==(count+2)?255:0);
-               }
-               count++;
-               count=count%48;
-               ws2801.Draw();
-               usleep(1000000 / fps);
-	       //sleep(1);
-	       //printf("loop\n");
-          }
-     }
-//     catch (int error)
-  //   {
-//          printf("Exception %d (%s)\n", error, strerror(error));
-    // }
-
-     return EXIT_SUCCESS;
-}
-
 
 void init(Handle<Object> exports) {
   exports->Set(String::NewSymbol("setLed"), FunctionTemplate::New(setLed)->GetFunction());
