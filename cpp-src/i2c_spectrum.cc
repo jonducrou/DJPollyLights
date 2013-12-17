@@ -24,13 +24,13 @@ Handle<Value> getSpectrum(const Arguments& args) {
     char buf[10] = {0};
 
     // Using I2C Read
-    if (read(file,buf,7) != 7) {
+    if (read(file,buf,9) != 9) {
         /* ERROR HANDLING: i2c transaction failed */
         return scope.Close(Undefined());
     } else {
       int i = 0;
       Local<Object> obj = Object::New();
-      for (i = 0 ; i < 7; ++i){
+      for (i = 0 ; i < 9; ++i){
         obj->Set(Number::New(i), Number::New(buf[i]));
       }
       return scope.Close(obj);

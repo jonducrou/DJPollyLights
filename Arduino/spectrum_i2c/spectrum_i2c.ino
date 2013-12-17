@@ -20,8 +20,17 @@ long beat_length;
 float bpm = 120;
 boolean offBeat = true; 
 boolean sentBeat = false;
+long MAX_VOLUME = (255 << 2);
+long MIN_VOLUME = (180 << 2);
+double MAX_MODIFIER = 10.0;
+double MIN_MODIFIER = 0.5;
+double modifier = 1.0;
+
+
+long running_volume = 200;
 
 void setup() { 
+  //Serial.begin(9600);
   start = t = millis();
   Wire.begin(0x29);              
   Wire.onRequest(sendSpectrum); 
@@ -53,6 +62,7 @@ void readSpectrum()
 {
   // Band 0 = Lowest Frequencies.
   byte i;
+  long volume = 0;
   for(i=0;i <7; i++)
   {
     //Read twice and take the average by dividing by 2
@@ -61,12 +71,26 @@ void readSpectrum()
     value -= 80;
     if (value < 0)
       value=0;
+    value *= modifier;
+    volume = value > volume?value:volume;
     //value is 10 bit, we need 8 bit, so divide by 4
     value >>= 2;
-    spectrum[i] = (byte)((float)spectrum[i] * 0.7 + (float)value * 0.3);
+    spectrum[i] = (byte)((float)spectrum[i] * 0.9 + (float)value * 0.1);
     //request the next value
     digitalWrite(spectrumStrobe,HIGH);
     digitalWrite(spectrumStrobe,LOW);     
+  }
+  running_volume = running_volume * .95 + volume * .05;
+  if (running_volume < MIN_VOLUME) {
+    modifier += .001;
+  } else if (running_volume > MAX_VOLUME) {
+    modifier -= .02;
+  }
+  if (modifier > MAX_MODIFIER){
+    modifier = MAX_MODIFIER;
+  }
+  if (modifier < MIN_MODIFIER){
+  modifier = MIN_MODIFIER;
   }
   captureBeat(spectrum[0]);
 }
@@ -81,6 +105,7 @@ void sendSpectrum() {
     sentBeat = false;
   }
   Wire.write(spectrum, 9);
+  //Serial.println(modifier);
 }
 
 
