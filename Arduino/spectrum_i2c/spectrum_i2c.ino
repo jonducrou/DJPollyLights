@@ -7,13 +7,13 @@ int spectrumAnalog=0;
 byte spectrum[9];
 
 
-#define SIZE 1024
-#define SLICE 32
+#define SIZE 512
+#define SLICE 16
 
 byte huge[SIZE];
 long energy[SIZE/SLICE];
 int p = 0;
-long t;
+volatile long t;
 long start;
 long last_beat;
 long beat_length;
@@ -50,6 +50,8 @@ void setup() {
   digitalWrite(spectrumReset,LOW);
   delay(5);
   // Reading the analyzer now will read the lowest frequency.
+  
+  //Serial.println("INITIALIZED");
 }
 
 //just loop and read - need to add normalization
@@ -92,7 +94,7 @@ void readSpectrum()
   if (modifier < MIN_MODIFIER){
   modifier = MIN_MODIFIER;
   }
-  captureBeat(spectrum[0]);
+  captureBeat((spectrum[0]+spectrum[0])>>1);
 }
 
 void sendSpectrum() {
@@ -100,12 +102,15 @@ void sendSpectrum() {
   if (!offBeat && !sentBeat) {
     spectrum[8] = 1;
     sentBeat = true;
+ //   Serial.println("!!!!!!!!!");
   } else {
     spectrum[8] = 0;
     sentBeat = false;
+ //   Serial.print(beat_length);
+ //   Serial.print("\t");
+ //   Serial.println(bpm);
   }
   Wire.write(spectrum, 9);
-  //Serial.println(modifier);
 }
 
 
@@ -130,19 +135,24 @@ void captureBeat(byte value) {
     sumEnergy/=SIZE;
     energy[(SIZE/SLICE)-1] = newEnergy;
     long diff = millis()-t;
-    if (newEnergy > 1.3 * sumEnergy && diff > .9*beat_length) {
+    if (newEnergy > 1.2 * sumEnergy && diff > .8*beat_length) {
       if (offBeat) {
-        float newBPM = 60000/(float)diff;
-        bpm = bpm*.9 + newBPM*.1;
-        beat_length = beat_length*.9 + diff*.1;
         t = millis();  
+        beat_length = beat_length*.9 + diff*.1;
+        if (beat_length < 375) beat_length = 375; //160bpm
+        if (beat_length > 600) beat_length = 600; //100bpm
+        
+        bpm = 60000/(float)beat_length;
       }
       offBeat = false;
     } 
     else {
       offBeat = true;
     }
-  }
 
+//Serial.println(bpm);
+          }
+  
+  
 }
 
