@@ -1,6 +1,7 @@
 var leds = require('./24x6');
 var spectrum = require('./cpp-src/build/Release/spectrum');
-var FRAME_RATE = 50;
+var FRAME_RATE = 100;
+var REPORT_RATE = 500;
 var c = 0;
 console.log(process.argv);
 
@@ -18,21 +19,27 @@ for (var x = 0; x < 24;++x){
   }
 }
 
-var next_frame = (new Date).getTime();
-var miss_c = 0;
+var render_time = 0;
+var spectrum_time = 0;
+var layout_time = 0;
+var pump_time = 0;
 
 function go() {
-  var d = (new Date).getTime();
-  miss_c+=d-next_frame;
-  next_frame = d+1000/FRAME_RATE;
-  
+  var start_time = (new Date).getTime();
   c++;
-  if (c > 750) {
-    console.log("avg " + Math.round(miss_c/c) + "ms per frame, frame rate needs " + (1000/FRAME_RATE));
+  if (c > REPORT_RATE) {
+    console.log("avg " + Math.round(render_time/REPORT_RATE) + "ms per frame, frame rate needs " + (1000/FRAME_RATE));
+    console.log("  spectrum " + Math.round(spectrum_time/REPORT_RATE) + "ms per frame");
+    console.log("  layout   " + Math.round(layout_time/REPORT_RATE) + "ms per frame");
+    console.log("  pump     " + Math.round(pump_time/REPORT_RATE) + "ms per frame");
+    render_time=0;
+    spectrum_time=0;
+    layout_time=0;
+    pump_time=0;
     c=0;
-    miss_c=0;
   }
 
+  d = (new Date).getTime();
   var s;
   try {
     s = spectrum.getSpectrum();
@@ -44,7 +51,10 @@ function go() {
     s=[0,0,0,0,0,0];
   }
   var volume = (s[0]+s[1]+s[2]+s[3]+s[4]+s[5]+s[6])/7;
+  spectrum_time += (new Date).getTime()-d;
 
+
+  d = (new Date).getTime();
   for (var x = 0; x < 24;++x){
     for (var y = 0; y < 6; y++){
       for (var b = 0; b < 3; b++){
@@ -60,15 +70,16 @@ function go() {
       }  
     }
   }
+  layout_time += (new Date).getTime()-d;
   
-  for (var x = 0; x < 24;++x){ 
-    for (var y = 0; y < 6;++y){ 
-      leds.setLed(x,y,pixels[x][y][0],pixels[x][y][1],pixels[x][y][2]); 
-    }
-  }
-  leds.draw();
-  d = (new Date).getTime() - d;
-  setTimeout(go,(1000/FRAME_RATE)-d);
+
+  d = (new Date).getTime();
+  leds.pump(pixels);
+  pump_time += (new Date).getTime()-d;
+
+  d = (new Date).getTime();
+  render_time += d-start_time;
+  setTimeout(go,(1000/FRAME_RATE)-(d-start_time));
 }
 
 require('./clear.js');

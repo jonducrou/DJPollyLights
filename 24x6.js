@@ -8,6 +8,10 @@ exports.draw = function(x,y,r,g,b) {
   leds.draw();
 }
 
+exports.pump = function(pixels) {
+  leds.pump(pixels);
+}
+
 var paint24x6map = [
   [132,131,108,107,84,83],
   [133,130,109,106,85,82],

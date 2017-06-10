@@ -38,7 +38,7 @@ function go() {
   if (now_playing[0][1] <= 0) {
     now_playing.splice(0,1);
   }
-  if (c > 750) {
+  if (c > 2000) {
     console.log("avg " + Math.round(miss_c/c) + "ms per frame, frame rate needs " + (1000/FRAME_RATE));
     if (now_playing.length == 1) {
       var keys = Object.keys(providers);
@@ -64,10 +64,10 @@ function go() {
   try {
     s = spectrum.getSpectrum();
   } catch (x){
-    console.log("f: ");
+    console.log("ERROR: Unable to getSpectrum()" + x);
   }
   if (s==undefined){
-    console.log("x:");
+    console.log("ERROR: Spectrum undefined?!");
     s=[0,0,0,0,0,0];
   }
   var volume = (s[0]+s[1]+s[2]+s[3]+s[4]+s[5]+s[6])/7;
@@ -93,12 +93,13 @@ function go() {
     }
   }
   
-  for (var x = 0; x < 24;++x){ 
-    for (var y = 0; y < 6;++y){ 
-      leds.setLed(x,y,pixels[x][y][0],pixels[x][y][1],pixels[x][y][2]); 
-    }
-  }
-  leds.draw();
+//  for (var x = 0; x < 24;++x){ 
+  //  for (var y = 0; y < 6;++y){ 
+  //    leds.setLed(x,y,pixels[x][y][0],pixels[x][y][1],pixels[x][y][2]); 
+  //  }
+//  }
+//  leds.draw();
+  leds.pump(pixels);
   d = (new Date).getTime() - d;
   setTimeout(go,(1000/FRAME_RATE)-d);
 }
