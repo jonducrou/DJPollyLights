@@ -42,7 +42,7 @@ CWS2801Driver::CWS2801Driver(const char * _spidev)
      int res;
      m_Spi = new CSPIDriver();
   
-     if ((res = m_Spi->Open(_spidev, 8 , SPI_CPHA , 1000000)) != 0)
+     if ((res = m_Spi->Open(_spidev, 8 , SPI_CPHA , 2000000)) != 0)
      {
           printf("error: spi open failed\n");
 
